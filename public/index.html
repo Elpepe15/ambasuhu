@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <title>AMBA SUHU | IoT Monitoring</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <section id="loginPage" class="login-page">
+    <div class="login-card">
+      <div class="logo">❄</div>
+      <h1>AMBA SUHU</h1>
+      <p class="muted">IoT Storage Monitoring System</p>
+
+      <form id="loginForm">
+        <label>DEVICE ID</label>
+        <input id="deviceId" placeholder="Masukkan ID alat" required>
+
+        <label>PASSWORD</label>
+        <input id="password" type="password"
+          placeholder="Masukkan password" required>
+
+        <button type="submit" id="loginButton">
+          LOGIN DASHBOARD
+        </button>
+      </form>
+
+      <p id="loginError" class="error"></p>
+    </div>
+  </section>
+
+  <main id="dashboard" hidden>
+    <header class="topbar">
+      <div>
+        <h2>AMBA SUHU</h2>
+        <p id="deviceLabel">Device</p>
+      </div>
+
+      <div class="header-right">
+        <span id="connection" class="badge offline">
+          OFFLINE
+        </span>
+        <button id="logoutButton" class="secondary">
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <section class="welcome">
+      <div>
+        <h1>Storage Monitoring</h1>
+        <p>Real-time temperature & humidity monitoring</p>
+      </div>
+      <div id="systemStatus" class="status normal">
+        NORMAL
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article class="metric">
+        <span>🌡 TEMPERATURE</span>
+        <strong id="temperature">--.- °C</strong>
+        <small id="temperatureLimit">Batas: --</small>
+      </article>
+
+      <article class="metric">
+        <span>💧 HUMIDITY</span>
+        <strong id="humidity">--.- %</strong>
+        <small id="humidityLimit">Batas: --</small>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h3>Storage Mode Control</h3>
+
+      <div class="mode-buttons">
+        <button data-mode="FREEZER">FREEZER</button>
+        <button data-mode="CHILLER">CHILLER</button>
+        <button data-mode="GUDANG">GUDANG</button>
+      </div>
+
+      <p>Mode aktif: <strong id="currentMode">--</strong></p>
+    </section>
+
+    <section class="panel">
+      <h3>Alarm Information</h3>
+      <div id="alarmInfo" class="alarm-normal">
+        Tidak ada alarm aktif
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>Device Information</h3>
+      <div class="info-row">
+        <span>Device ID</span>
+        <strong id="infoDevice">--</strong>
+      </div>
+      <div class="info-row">
+        <span>Uptime</span>
+        <strong id="uptime">--</strong>
+      </div>
+      <div class="info-row">
+        <span>Last Update</span>
+        <strong id="lastUpdate">--</strong>
+      </div>
+    </section>
+
+    <footer>AMBA SUHU · IoT Monitoring System</footer>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>
