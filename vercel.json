@@ -1,0 +1,13 @@
+
+{
+  "rewrites": [
+    {
+      "source": "/info/modeJSON",
+      "destination": "/api/info/modeJSON"
+    },
+    {
+      "source": "/info/dataJSON",
+      "destination": "/api/info/dataJSON"
+    }
+  ]
+}
