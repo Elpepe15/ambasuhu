@@ -38,16 +38,21 @@ export default async function handler(req, res) {
 
     // ==================================
     // GET MODE
+    // Browser SESSION atau ESP32 DEVICE
     // ==================================
 
     if (req.method === "GET") {
 
-      const deviceId = await requireDevice(req);
+      let deviceId = await requireSession(req);
+
+      if (!deviceId) {
+        deviceId = await requireDevice(req);
+      }
 
       if (!deviceId) {
         return sendJson(res, 401, {
           success: false,
-          error: "Unauthorized device"
+          error: "Unauthorized"
         });
       }
 
@@ -57,7 +62,7 @@ export default async function handler(req, res) {
 
       if (mode === null) {
         mode = "1";
-        await redis.set(key, mode);
+        await redis.set(key, "1");
       }
 
       const modeId = Number(mode);
@@ -85,11 +90,11 @@ export default async function handler(req, res) {
         humidity_min: limits.humidity_min,
         humidity_max: limits.humidity_max
       });
-
     }
 
     // ==================================
     // POST MODE
+    // Hanya browser yang sudah login
     // ==================================
 
     if (req.method === "POST") {
@@ -145,12 +150,12 @@ export default async function handler(req, res) {
         humidity_min: limits.humidity_min,
         humidity_max: limits.humidity_max
       });
-
     }
 
     res.setHeader("Allow", "GET, POST");
 
     return sendJson(res, 405, {
+      success: false,
       error: "Method not allowed"
     });
 
@@ -159,9 +164,9 @@ export default async function handler(req, res) {
     console.error("MODE ERROR:", error);
 
     return sendJson(res, 500, {
+      success: false,
       error: "Server error"
     });
 
   }
-
 }
