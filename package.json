@@ -1,0 +1,19 @@
+
+{
+  "name": "ambasuhu",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "hash": "node scripts/hash-password.js"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.35.0",
+    "bcryptjs": "^3.0.2",
+    "jose": "^6.0.11"
+  },
+  "devDependencies": {
+    "vercel": "^41.0.0"
+  }
+}
