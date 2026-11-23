@@ -9,12 +9,12 @@ const rl = readline.createInterface({
 });
 
 const password = await rl.question(
-  "Masukkan password perangkat: "
+  "Password perangkat baru: "
 );
 
 const hash = await bcrypt.hash(password, 12);
 
-console.log("\nPassword hash:");
+console.log("\nHASH PASSWORD:");
 console.log(hash);
 
 rl.close();
