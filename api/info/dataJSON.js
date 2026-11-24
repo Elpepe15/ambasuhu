@@ -87,10 +87,41 @@ export default async function handler(req, res) {
         last_seen: Date.now()
       };
 
+      // Simpan nilai terbaru untuk dashboard.
       await redis.set(
         `device:${deviceId}:data`,
         JSON.stringify(data)
       );
+
+      // Data logger: catat maksimal sekali setiap 30 detik.
+      // Proses ini berada di server, sehingga payload dan kerja ESP32 tetap ringan.
+      if (!sensorError) {
+        const historyKey = `device:${deviceId}:history`;
+        const logClockKey = `device:${deviceId}:history:last`;
+        const lastLog = Number(await redis.get(logClockKey) || 0);
+
+        if (Date.now() - lastLog >= 30000) {
+          const point = {
+            timestamp: data.last_seen,
+            temperature: data.temperature,
+            humidity: data.humidity
+          };
+
+          await redis.zadd(historyKey, {
+            score: point.timestamp,
+            member: JSON.stringify(point)
+          });
+
+          // Retensi 7 hari agar penyimpanan Redis tidak terus membesar.
+          await redis.zremrangebyscore(
+            historyKey,
+            0,
+            Date.now() - 7 * 24 * 60 * 60 * 1000
+          );
+
+          await redis.set(logClockKey, String(point.timestamp), { ex: 8 * 24 * 60 * 60 });
+        }
+      }
 
       return sendJson(res, 200, {
         success: true,
